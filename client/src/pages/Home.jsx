@@ -55,7 +55,7 @@ export default function Home() {
         if(currentUser.role === 'hospital') {
         const fetchHospitalBloodRequestCount = async () => {
           try {
-            const response1 = await fetch(`http://localhost:4000/api/hospital/gethospitalbloodrequeststatuscount/${currentUser._id}`, {
+            const response1 = await fetch(`/api/hospital/gethospitalbloodrequeststatuscount/${currentUser._id}`, {
               credentials: 'include'
             });
             const countData1 = await response1.json();
@@ -74,7 +74,7 @@ export default function Home() {
         if(currentUser.role === 'organisation'){
         const fetchOrganisationDonationRequestCount = async () => {
           try {
-            const response2 = await fetch(`http://localhost:4000/api/organisation/getorganisationdonationrequeststatuscount/${currentUser._id}`, {
+            const response2 = await fetch(`/api/organisation/getorganisationdonationrequeststatuscount/${currentUser._id}`, {
               credentials: 'include'
             });
             const countData2 = await response2.json();
@@ -92,7 +92,7 @@ export default function Home() {
         if(currentUser.role === 'admin') {
         const fetchAdminBloodRequestCount = async () => {
           try {
-            const response3 = await fetch(`http://localhost:4000/api/admin/getadminbloodrequeststatuscount`, {
+            const response3 = await fetch(`/api/admin/getadminbloodrequeststatuscount`, {
               credentials: 'include'
             });
             const countData3 = await response3.json();
@@ -110,7 +110,7 @@ export default function Home() {
         if(currentUser.role === 'admin') {
         const fetchAdminDonationRequestCount = async () => {
           try {
-            const response4 = await fetch(`http://localhost:4000/api/admin/getadmindonationrequeststatuscount`, {
+            const response4 = await fetch(`/api/admin/getadmindonationrequeststatuscount`, {
               credentials: 'include'
             });
             const countData4 = await response4.json();
@@ -128,7 +128,7 @@ export default function Home() {
         if(currentUser.role === 'consumer') {
         const fetchConsumerBloodRequestCount = async () => {
           try {
-            const response5 = await fetch(`http://localhost:4000/api/consumer/getconsumerbloodrequeststatuscount/${currentUser._id}`, {
+            const response5 = await fetch(`/api/consumer/getconsumerbloodrequeststatuscount/${currentUser._id}`, {
               credentials: 'include'
             });
             const countData5 = await response5.json();
@@ -146,7 +146,7 @@ export default function Home() {
         if(currentUser.role === 'donor') {
         const fetchDonorDonationRequestCount = async () => {
           try {
-            const response6 = await fetch(`http://localhost:4000/api/donor/getdonordonationrequeststatuscount/${currentUser._id}`, {
+            const response6 = await fetch(`/api/donor/getdonordonationrequeststatuscount/${currentUser._id}`, {
               credentials: 'include'
             });
             const countData6 = await response6.json();
@@ -164,7 +164,7 @@ export default function Home() {
         const handleShowAllBlood = async () => {
             try {
               setAllBloodError(false);
-              const res = await fetch(`http://localhost:4000/api/blood/getall`, {
+              const res = await fetch(`/api/blood/getall`, {
                 credentials: 'include'
               });
               const data = await res.json();

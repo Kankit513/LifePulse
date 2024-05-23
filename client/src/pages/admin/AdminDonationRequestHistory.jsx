@@ -11,7 +11,7 @@ export default function AdminDonationRequestHistory() {
         const handleShowDonationRequest = async () => {
             try {
               setShowDonationRequestError(false);
-              const res = await fetch(`http://localhost:4000/api/admin/getadmindonationrequesthistory`, {
+              const res = await fetch(`/api/admin/getadmindonationrequesthistory`, {
                 credentials: 'include'
               });
               const data = await res.json();
@@ -30,7 +30,7 @@ export default function AdminDonationRequestHistory() {
 
     const updateStatus = async (id, newStatus) => {
         try {
-          const response = await fetch(`http://localhost:4000/api/admin/updateadmindonationrequeststatus/${id}`, {
+          const response = await fetch(`/api/admin/updateadmindonationrequeststatus/${id}`, {
             method: 'PATCH',
             credentials: 'include',
             headers: {

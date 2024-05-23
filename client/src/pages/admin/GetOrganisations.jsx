@@ -11,7 +11,7 @@ export default function GetOrganisations() {
         const handleShowAllOrganisation = async () => {
             try {
               setAllOrganisationError(false);
-              const res = await fetch(`http://localhost:4000/api/admin/getallorganisations`, {
+              const res = await fetch(`/api/admin/getallorganisations`, {
                 credentials: 'include'
               });
               const data = await res.json();

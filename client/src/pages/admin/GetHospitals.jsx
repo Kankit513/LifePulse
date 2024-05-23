@@ -11,7 +11,7 @@ export default function GetHospitals() {
         const handleShowAllHospital = async () => {
             try {
                 setAllHospitalError(false);
-              const res = await fetch(`http://localhost:4000/api/admin/getallhospitals`, {
+              const res = await fetch(`/api/admin/getallhospitals`, {
                 credentials: 'include'
               });
               const data = await res.json();

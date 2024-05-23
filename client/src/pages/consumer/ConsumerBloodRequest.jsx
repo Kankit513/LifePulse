@@ -27,7 +27,7 @@ export default function ConsumerBloodRequest() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:4000/api/consumer/createconsumerbloodrequest`, {
+      const res = await fetch(`/api/consumer/createconsumerbloodrequest`, {
         method: 'POST',
         credentials: 'include',
         headers: {

@@ -11,7 +11,7 @@ export default function GetDonors() {
         const handleShowAllDonor = async () => {
             try {
               setAllDonorError(false);
-              const res = await fetch(`http://localhost:4000/api/admin/getallDonors`, {
+              const res = await fetch(`/api/admin/getallDonors`, {
                 credentials: 'include'
               });
               const data = await res.json();

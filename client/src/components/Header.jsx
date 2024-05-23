@@ -90,11 +90,6 @@ export default function Header() {
           </Link>
 
           <ul className='flex gap-4 relative mt-1'>
-            {/* <Link to='/'>
-              <li className='text-slate-200 sm:inline hover:underline'>
-                Start
-              </li>
-            </Link> */}
             <Link to='/about'>
               <li className='text-slate-200 sm:inline hover:underline'>
                 About

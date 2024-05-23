@@ -12,7 +12,7 @@ export default function HospitalBloodRequestHistory() {
         const handleShowBloodRequest = async () => {
             try {
               setShowBloodRequestError(false);
-              const res = await fetch(`http://localhost:4000/api/hospital/gethospitalbloodrequesthistory/${currentUser._id}`, {
+              const res = await fetch(`/api/hospital/gethospitalbloodrequesthistory/${currentUser._id}`, {
                 credentials: 'include'
             });
               const data = await res.json();

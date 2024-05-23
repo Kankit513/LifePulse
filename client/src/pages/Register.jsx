@@ -18,7 +18,7 @@ export default function Register() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:4000/api/auth/register`, {
+      const res = await fetch(`/api/auth/register`, {
         method: 'POST',
         credentials: 'include',
         headers: {

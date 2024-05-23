@@ -11,7 +11,7 @@ export default function AdminBloodRequestHistory() {
         const handleShowBloodRequest = async () => {
             try {
               setShowBloodRequestError(false);
-              const res = await fetch(`http://localhost:4000/api/admin/getadminbloodrequesthistory`, {
+              const res = await fetch(`/api/admin/getadminbloodrequesthistory`, {
                 credentials: 'include'
             });
               const data = await res.json();
@@ -30,7 +30,7 @@ export default function AdminBloodRequestHistory() {
 
     const updateStatus = async (id, newStatus) => {
         try {
-          const response = await fetch(`http://localhost:4000/api/admin/updateadminbloodrequeststatus/${id}`, {
+          const response = await fetch(`/api/admin/updateadminbloodrequeststatus/${id}`, {
             method: 'PATCH',
             credentials: 'include',
             headers: {

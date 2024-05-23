@@ -11,7 +11,7 @@ export default function GetConsumers() {
         const handleShowAllConsumer = async () => {
             try {
                 setAllConsumerError(false);
-              const res = await fetch(`http://localhost:4000/api/admin/getallConsumers`, {
+              const res = await fetch(`/api/admin/getallConsumers`, {
                 credentials: 'include'
               });
               const data = await res.json();

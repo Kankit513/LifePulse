@@ -21,7 +21,7 @@ export default function HospitalBloodRequest() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:4000/api/hospital/createhospitalbloodrequest`, {
+      const res = await fetch(`/api/hospital/createhospitalbloodrequest`, {
         method: 'POST',
         credentials: 'include',
         headers: {

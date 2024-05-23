@@ -33,7 +33,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`http://localhost:4000/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -74,7 +74,7 @@ export default function Profile() {
   const handleLogOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch(`http://localhost:4000/api/auth/logout`, {
+      const res = await fetch(`/api/auth/logout`, {
         credentials: 'include'
       });
       const data = await res.json();

@@ -21,7 +21,7 @@ export default function OrganisationDonationRequest() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:4000/api/organisation/createorganisationdonationrequest`, {
+      const res = await fetch(`/api/organisation/createorganisationdonationrequest`, {
         method: 'POST',
         credentials: 'include',
         headers: {

@@ -12,7 +12,7 @@ export default function ConsumerBloodRequestHistory() {
         const handleShowBloodRequest = async () => {
             try {
               setShowBloodRequestError(false);
-              const res = await fetch(`http://localhost:4000/api/consumer/getconsumerbloodrequesthistory/${currentUser._id}`, {
+              const res = await fetch(`/api/consumer/getconsumerbloodrequesthistory/${currentUser._id}`, {
                 credentials: 'include'
             });
               const data = await res.json();

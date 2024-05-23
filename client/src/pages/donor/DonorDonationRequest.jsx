@@ -27,7 +27,7 @@ export default function DonorDonationRequest() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:4000/api/donor/createdonordonationrequest`, {
+      const res = await fetch(`/api/donor/createdonordonationrequest`, {
         method: 'POST',
         credentials: 'include',
         headers: {

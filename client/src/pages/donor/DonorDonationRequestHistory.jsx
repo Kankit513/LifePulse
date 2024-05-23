@@ -12,7 +12,7 @@ export default function DonorDonationRequestHistory() {
         const handleShowDonationRequest = async () => {
             try {
               setShowDonationRequestError(false);
-              const res = await fetch(`http://localhost:4000/api/donor/getdonordonationrequesthistory/${currentUser._id}`, {
+              const res = await fetch(`/api/donor/getdonordonationrequesthistory/${currentUser._id}`, {
                 credentials: 'include'
             });
               const data = await res.json();

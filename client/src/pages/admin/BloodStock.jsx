@@ -18,7 +18,7 @@ export default function BloodStock() {
         const handleShowAllBlood = async () => {
             try {
               setAllBloodError(false);
-              const res = await fetch(`http://localhost:4000/api/blood/getall`, {
+              const res = await fetch(`/api/blood/getall`, {
                 credentials: 'include'
               });
               const data = await res.json();
@@ -53,7 +53,7 @@ export default function BloodStock() {
             return;
         }
         try {
-          const response = await fetch(`http://localhost:4000/api/admin/updatebloodgroupquantity/${selectedBloodGroupId}`, {
+          const response = await fetch(`/api/admin/updatebloodgroupquantity/${selectedBloodGroupId}`, {
             method: 'PATCH',
             credentials: 'include',
             headers: {
