@@ -6,7 +6,7 @@ const { errorHandler } = require('../utils/error');
 
 module.exports.getAdminBloodRequestHistory = async (req, res, next) => {
     try {
-      const adminBloodRequestHistory = await BloodRequest.find({}).populate('userRef', 'username hospitalName organisationName');
+      const adminBloodRequestHistory = await BloodRequest.find({}).populate('orgRef', 'organisationName').populate('userRef', 'hospitalName');
       // const adminBloodRequest = await BloodRequest.find({}).populate('userRef', 'username email role');;
       if (!adminBloodRequestHistory) {
         return next(errorHandler(401, 'No Any Blood Request Found!'));
@@ -19,7 +19,7 @@ module.exports.getAdminBloodRequestHistory = async (req, res, next) => {
 
 module.exports.getAdminDonationRequestHistory = async (req, res, next) => {
   try {
-      const adminDonationRequestHistory = await DonationRequest.find({}).populate('userRef', 'username hospitalName organisationName');
+      const adminDonationRequestHistory = await DonationRequest.find({}).populate('orgRef', 'organisationName');
       if (!adminDonationRequestHistory) {
         return next(errorHandler(402, 'No Any Blood Donation Request Found!'));
       }
@@ -60,86 +60,6 @@ module.exports.getAdminDonationRequestStatusCount = async (req, res, next) => {
       adminApprovedDonationRequests,
       adminRejectedDonationRequests,
     });
-  } catch (error) {
-    next(error);
-  }
-};
-
-module.exports.updateAdminBloodRequestStatus = async (req, res, next) => {
-  const { id } = req.params;
-  const { status } = req.body;
-  try {
-    const updatedBloodRequestStatus = await BloodRequest.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
-    if (!updatedBloodRequestStatus) return next(errorHandler(403, 'Blood Donor Request Not Found' ));
-
-    if (status === 'Approved') {
-      const bloodGroup = updatedBloodRequestStatus.bloodGroup;
-      const quantity = updatedBloodRequestStatus.quantity;
-
-      const blood = await Blood.findOneAndUpdate(
-        { bloodGroup },
-        { $inc: { unit: -quantity } },
-        { new: true, upsert: true }
-      );
-
-      if (!blood) {
-        return next(errorHandler(404, 'Failed to Update Blood Quantity' ));
-      }
-    }
-    res.status(200).json(updatedBloodRequestStatus);
-  } catch (error) {
-    next(error);
-  }
-};
-
-module.exports.updateAdminDonationRequestStatus = async (req, res, next) => {
-  const { id } = req.params;
-  const { status } = req.body;
-  try {
-    const updatedDonationRequestStatus = await DonationRequest.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
-    if (!updatedDonationRequestStatus) return next(errorHandler(405, 'Blood Donation Request Not Found' ));
-
-    if (status === 'Approved') {
-      const bloodGroup = updatedDonationRequestStatus.bloodGroup;
-      const quantity = updatedDonationRequestStatus.quantity;
-
-      const blood = await Blood.findOneAndUpdate(
-        { bloodGroup },
-        { $inc: { unit: quantity } },
-        { new: true, upsert: true }
-      );
-
-      if (!blood) {
-        return next(errorHandler(406, 'Failed to Update Blood Quantity' ));
-      }
-    }
-    res.status(200).json(updatedDonationRequestStatus);
-  } catch (error) {
-    next(error);
-  }
-};
-
-module.exports.updateBloodGroupQuantity = async (req, res, next) => {
-  const { id } = req.params;
-  const { unit } = req.body;
-  try {
-    const updatedBlood = await Blood.findByIdAndUpdate(
-      id,
-      { $inc: { unit: unit } },
-      { new: true, upsert: true }
-    );
-    if (!updatedBlood) {
-      return next(errorHandler(407, 'Blood Not Updated!'));
-    }
-    res.status(200).json(updatedBlood);
   } catch (error) {
     next(error);
   }

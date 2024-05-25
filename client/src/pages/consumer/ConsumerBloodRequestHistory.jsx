@@ -35,10 +35,10 @@ export default function ConsumerBloodRequestHistory() {
 
     return (
         <>
-            <h1 className='text-center my-4 text-3xl font-semibold'>My Blood Request History</h1>
+            <h1 className='text-center my-4 text-3xl font-semibold'>Total Blood Request Made</h1>
             {bloodRequest.length > 0 ? (
                 <>
-                <div className='p-4 max-w-5xl mx-auto border-2 border-slate-600 bg-slate-300 rounded-md mb-4'>
+                <div className='p-4 max-w-7xl mx-auto border-2 border-slate-600 bg-slate-300 rounded-md mb-4'>
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
                         <table className="w-full text-center rtl:text-right text-slate-600">
                             <thead className="text-sm text-black uppercase">
@@ -68,10 +68,13 @@ export default function ConsumerBloodRequestHistory() {
                                         Quantity
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        Disease
+                                        Reason
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         Date
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Organisation Name
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         Status
@@ -111,6 +114,9 @@ export default function ConsumerBloodRequestHistory() {
                                     </td>
                                     <td className="px-6 py-4">
                                         {formatDate(request.date)}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {request.orgRef.organisationName}
                                     </td>
                                     <td className="px-6 py-4">
                                         {request.status === 'Pending' ? (

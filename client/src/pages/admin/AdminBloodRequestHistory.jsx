@@ -28,31 +28,6 @@ export default function AdminBloodRequestHistory() {
         handleShowBloodRequest();
     },[]);
 
-    const updateStatus = async (id, newStatus) => {
-        try {
-          const response = await fetch(`/api/admin/updateadminbloodrequeststatus/${id}`, {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ status: newStatus }),
-          });
-          const data = await response.json();
-          if (data.success === false) {
-            return;
-          }
-          console.log(data);
-          setAdminBloodRequest((prevRequests) =>
-            prevRequests.map((request) =>
-                request._id === id ? { ...request, status: newStatus } : request
-            )
-          );
-        } catch (error) {
-          console.error('Failed to update status', error);
-        }
-    };
-
     return (
         <>
             <h1 className='text-center my-4 text-3xl font-semibold'>All Blood Request</h1>
@@ -88,16 +63,16 @@ export default function AdminBloodRequestHistory() {
                                         Quantity
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        Disease
+                                        Reason
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Organisation Name
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Hospital Name
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         Status
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Action
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
-                                        Hospital
                                     </th>
                                 </tr>
                             </thead>
@@ -133,6 +108,12 @@ export default function AdminBloodRequestHistory() {
                                         {request.disease}
                                     </td>
                                     <td className="px-6 py-4">
+                                        {request.orgRef.organisationName}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {(request.userRef.hospitalName) || 'consumer role'}
+                                    </td>
+                                    <td className="px-6 py-4">
                                         {request.status === 'Pending' ? (
                                             <div className='h-7 w-20 text-white bg-sky-500'>
                                                 {request.status}
@@ -146,25 +127,6 @@ export default function AdminBloodRequestHistory() {
                                                 {request.status}
                                             </div>
                                         )}
-                                    </td>
-                                    <td className="flex gap-2 px-4 py-6">
-                                        {request.status === 'Pending' ? (
-                                            <>
-                                                <button onClick={() => updateStatus(request._id, 'Approved')} className='h-8 w-20 text-white rounded-3xl bg-green-600'>
-                                                    Approve
-                                                </button>
-                                                <button onClick={() => updateStatus(request._id, 'Rejected')} className='h-8 w-20 text-white rounded-3xl bg-red-600'>
-                                                    Reject
-                                                </button>
-                                            </>
-                                        ) : request.status === 'Approved' ? (
-                                            <div className='text-md flex-1'>{request.quantity} unit of {request.bloodGroup} blood sent!</div>
-                                        ) : (
-                                            <div className='text-md flex-1'>Request Discarded!</div>
-                                        )}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {request.userRef.hospitalName || 'consumer role'}
                                     </td>
                                 </tr>
                                 ))}

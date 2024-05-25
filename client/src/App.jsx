@@ -12,7 +12,7 @@ import DonorDonationRequest from './pages/donor/DonorDonationRequest';
 import DonorDonationRequestHistory from './pages/donor/DonorDonationRequestHistory';
 import HospitalBloodRequest from './pages/hospital/HospitalBloodRequest';
 import HospitalBloodRequestHistory from './pages/hospital/HospitalBloodRequestHistory';
-import OrganisationDonationRequest from './pages/organisation/OrganisationDonationRequest';
+import OrganisationBloodRequestHistory from './pages/organisation/OrganisationBloodRequestHistory';
 import OrganisationDonationRequestHistory from './pages/organisation/OrganisationDonationRequestHistory';
 import AdminBloodRequestHistory from './pages/admin/AdminBloodRequestHistory';
 import AdminDonationRequestHistory from './pages/admin/AdminDonationRequestHistory';
@@ -20,7 +20,9 @@ import GetConsumers from './pages/admin/GetConsumers';
 import GetDonors from './pages/admin/GetDonors';
 import GetHospitals from './pages/admin/GetHospitals';
 import GetOrganisations from './pages/admin/GetOrganisations';
-import BloodStock from './pages/admin/BloodStock';
+import CreateBlood from './pages/organisation/CreateBlood';
+import UpdateBlood from './pages/organisation/UpdateBlood';
+import OrganisationBloodStock from './pages/organisation/OrganisationBloodStock';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import PrivateRoute from './components/PrivateRoute';
@@ -61,7 +63,7 @@ function AppContent() {
           <Route path='/donor-donation-request-history' element={<DonorDonationRequestHistory />} />
           <Route path='/hospital-blood-request' element={<HospitalBloodRequest />} />
           <Route path='/hospital-blood-request-history' element={<HospitalBloodRequestHistory />} />
-          <Route path='/organisation-donation-request' element={<OrganisationDonationRequest />} />
+          <Route path='/organisation-blood-request-history' element={<OrganisationBloodRequestHistory />} />
           <Route path='/organisation-donation-request-history' element={<OrganisationDonationRequestHistory />} />
           <Route path='/admin-blood-request-history' element={<AdminBloodRequestHistory />} />
           <Route path='/admin-donation-request-history' element={<AdminDonationRequestHistory />} />
@@ -69,7 +71,9 @@ function AppContent() {
           <Route path='/get-donors' element={<GetDonors />} />
           <Route path='/get-hospitals' element={<GetHospitals />} />
           <Route path='/get-organisations' element={<GetOrganisations />} />
-          <Route path='/blood-stock' element={<BloodStock />} />
+          <Route path='/create-blood' element={<CreateBlood />} />
+          <Route path='/update-blood' element={<UpdateBlood />} />
+          <Route path='/organisation-blood-stock/:organisationId' element={<OrganisationBloodStock />} />
         </Route>
       </Routes>
       {showFooter && <Footer />}

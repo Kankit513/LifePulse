@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <>
-    <div className='bg-slate-800'>
+    <div className='bg-teal-800'>
       <header className='text-white shadow-xl p-3'>
         <div className='flex justify-between items-center max-w-6xl mx-auto'>
           <Link to='#'>
@@ -32,7 +32,7 @@ export default function Home() {
             <Link to='/profile'>
               {currentUser ? (
                 <img
-                  className='rounded-full h-7 w-7 object-cover border-solid border-2 border-black'
+                  className='rounded-full h-7 w-7 object-cover border-solid border-2 border-slate-800'
                   src='https://cdn-icons-png.freepik.com/256/3135/3135715.png'                  alt='profile'
                 />
               ) : (
@@ -53,7 +53,7 @@ export default function Home() {
         <div className='mx-auto text-black'>
             <h1 className='text-4xl font-semibold mb-4'>LifePulse™</h1>
             <p className="text-xl mb-8 "> Welcome to LifePulse™! <br /> Jump right in, if you need or donate Blood.</p>
-            <Link to={"/home"} className="bg-teal-300 p-3 text-lg text-black font-bold rounded-lg border-2 border-slate-700">Proceed</Link>
+            <Link to={"/home"} className="bg-cyan-400 p-3 text-lg text-black font-semibold rounded-lg border-2 border-black">Proceed</Link>
         </div>
       </div>
       <div className="flex justify-center text-slate-300 p-4">

@@ -229,10 +229,10 @@ export default function Profile() {
               Delete Account
             </span>
           </div> */}
-            <div onClick={handleLogOut} className='bg-sky-600 text-center text-white text-lg h-12 rounded-lg p-2 hover:opacity-95 disabled:opacity-80'
+            <Link onClick={handleLogOut} className='bg-sky-600 text-center text-white text-lg h-12 rounded-lg p-2 hover:opacity-95 disabled:opacity-80'
             >
               Logout
-            </div>
+            </Link>
           <button
             disabled={loading}
             className='bg-green-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'

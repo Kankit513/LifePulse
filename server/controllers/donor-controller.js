@@ -12,7 +12,7 @@ module.exports.createDonorDonationRequest = async (req, res, next) => {
 
 module.exports.getDonorDonationRequestHistory = async (req, res, next) => {
   try {
-    const donorDonationRequestHistory = await DonationRequest.find({ userRef: req.params.id });
+    const donorDonationRequestHistory = await DonationRequest.find({ userRef: req.params.id }).populate('orgRef', 'organisationName');
     if (!donorDonationRequestHistory) {
       return next(errorHandler(404, 'No Any Donation Request Found!'));
     }

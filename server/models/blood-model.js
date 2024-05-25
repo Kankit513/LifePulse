@@ -12,6 +12,11 @@ const bloodSchema = new Schema(
         type: Number,
         required: true,
       },
+      orgRef: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
     }
 );
 

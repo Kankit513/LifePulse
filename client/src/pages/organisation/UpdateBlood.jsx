@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 
-export default function BloodStock() {
+export default function UpdateBlood() {
 
     const { currentUser, loading, error } = useSelector((state) => state.user);
     const [allBloodError, setAllBloodError] = useState(false);
@@ -18,7 +18,7 @@ export default function BloodStock() {
         const handleShowAllBlood = async () => {
             try {
               setAllBloodError(false);
-              const res = await fetch(`/api/blood/getall`, {
+              const res = await fetch(`/api/blood/getall/${currentUser._id}`, {
                 credentials: 'include'
               });
               const data = await res.json();
@@ -29,7 +29,7 @@ export default function BloodStock() {
               console.log(data);
               setBloodStock(data);
             } catch (error) {
-                setAllBloodError(true);
+              setAllBloodError(true);
             }
         };
         handleShowAllBlood();
@@ -53,7 +53,7 @@ export default function BloodStock() {
             return;
         }
         try {
-          const response = await fetch(`/api/admin/updatebloodgroupquantity/${selectedBloodGroupId}`, {
+          const response = await fetch(`/api/organisation/updatebloodgroupquantity/${selectedBloodGroupId}`, {
             method: 'PATCH',
             credentials: 'include',
             headers: {
@@ -79,7 +79,7 @@ export default function BloodStock() {
 
     return (
         <>
-            <h1 className='text-center my-4 text-3xl font-semibold'>Blood Stock</h1>
+            <h1 className='text-center my-4 text-2xl font-semibold uppercase'>Update Blood for {currentUser.organisationName} Organisation!</h1>
                 <div className='p-4 max-w-lg mx-auto border-2 border-slate-600 bg-slate-300 rounded-md mb-4'>
                     <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
                         <table className="w-full text-center rtl:text-right text-slate-600">

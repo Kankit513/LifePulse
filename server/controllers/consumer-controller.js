@@ -12,7 +12,7 @@ module.exports.createConsumerBloodRequest = async (req, res, next) => {
 
 module.exports.getConsumerBloodRequestHistory = async (req, res, next) => {
   try {
-    const consumerBloodRequestHistory = await BloodRequest.find({ userRef : req.params.id });
+    const consumerBloodRequestHistory = await BloodRequest.find({ userRef : req.params.id }).populate('orgRef', 'organisationName');
     if (!consumerBloodRequestHistory) {
       return next(errorHandler(404, 'No Any Blood Request Found!'));
     }

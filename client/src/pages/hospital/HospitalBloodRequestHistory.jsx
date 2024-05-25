@@ -35,7 +35,7 @@ export default function HospitalBloodRequestHistory() {
 
     return (
         <>
-            <h1 className='text-center my-4 text-3xl font-semibold'>My Blood Request History</h1>
+            <h1 className='text-center my-4 text-3xl font-semibold'>Total Blood Request Made</h1>
             {bloodRequest.length > 0 ? (
                 <>
                 <div className='p-4 max-w-7xl mx-auto border-2 border-slate-600 bg-slate-300 rounded-md mb-4'>
@@ -44,14 +44,14 @@ export default function HospitalBloodRequestHistory() {
                             <thead className="text-sm text-black uppercase">
                                 <tr>
                                     <th scope="col" className="px-6 py-3">
-                                        Name
+                                        Patient Name
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
+                                    {/* <th scope="col" className="px-6 py-3">
                                         Address
-                                    </th>
-                                    <th scope="col" className="px-6 py-3">
+                                    </th> */}
+                                    {/* <th scope="col" className="px-6 py-3">
                                         Email
-                                    </th>
+                                    </th> */}
                                     {/* <th scope="col" className="px-6 py-3">
                                         Phone
                                     </th> */}
@@ -68,10 +68,13 @@ export default function HospitalBloodRequestHistory() {
                                         Quantity
                                     </th>
                                     <th scope="col" className="px-6 py-3">
-                                        Disease
+                                        Reason
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         Date
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Organisation Name
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         Status
@@ -85,12 +88,12 @@ export default function HospitalBloodRequestHistory() {
                                     <th className="px-6 py-4">
                                         {request.patientName}
                                     </th>
-                                    <td className="px-6 py-4">
+                                    {/* <td className="px-6 py-4">
                                         {request.address}
-                                    </td>
-                                    <td className="px-6 py-4">
+                                    </td> */}
+                                    {/* <td className="px-6 py-4">
                                         {request.email}
-                                    </td>
+                                    </td> */}
                                     {/* <td className="px-6 py-4">
                                         {request.phone}
                                     </td> */}
@@ -111,6 +114,9 @@ export default function HospitalBloodRequestHistory() {
                                     </td>
                                     <td className="px-6 py-4">
                                         {formatDate(request.date)}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {request.orgRef.organisationName}
                                     </td>
                                     <td className="px-6 py-4">
                                         {request.status === 'Pending' ? (

@@ -1,52 +1,3 @@
-// import { Link } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
-
-
-// export default function Header() {
-//   const { currentUser } = useSelector((state) => state.user);
-
-//   return (
-//       <>
-//       <header className='bg-slate-700 text-white shadow-md'>
-//         <div className='flex justify-between items-center max-w-5xl mx-auto p-4'>
-//           <Link to='/'>
-//             <h1 className='font-bold text-sm sm:text-xl'>
-//               <span className='text-slate-200'>Life</span>
-//               <span className='text-slate-400'>Pulse</span>
-//             </h1>
-//           </Link>
-
-//           <ul className='flex gap-4'>
-//             <Link to='/'>
-//               <li className='text-slate-200 sm:inline hover:underline'>
-//                 Home
-//               </li>
-//             </Link>
-//             <Link to='/'>
-//               <li className='text-slate-200 sm:inline hover:underline'>
-//                 About
-//               </li>
-//             </Link>
-            
-//             <Link to='/profile'>
-//               {currentUser ? (
-//                 <img
-//                   className='rounded-full h-7 w-7 object-cover border-solid border-2 border-slate-800'
-//                   src='https://cdn-icons-png.freepik.com/256/3135/3135715.png'
-//                   alt='profile'
-//                 />
-//               ) : (
-//                 <li className='text-slate-200 hover:underline'>Login</li>
-//               )}
-//             </Link>
-//           </ul>
-//         </div>
-//       </header>
-//       </>
-//   );
-// }
-
-
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -80,7 +31,7 @@ export default function Header() {
 
   return (
     <>
-      <header className='bg-slate-700 text-white shadow-md'>
+      <header className='bg-teal-800 text-white shadow-md'>
         <div className='flex justify-between items-center max-w-5xl mx-auto p-4'>
           <Link to='/'>
             <h1 className='font-bold text-sm sm:text-xl'>
@@ -125,7 +76,7 @@ export default function Header() {
                     </div>
                   )}
                   {dropdownOpen && currentUser.role==='donor' && (
-                    <div className='absolute right-0 mt-3 w-56 bg-cyan-200 rounded-md border border-gray-700 shadow-lg z-20'>
+                    <div className='absolute right-0 mt-3 w-60 bg-cyan-200 rounded-md border border-gray-700 shadow-lg z-20'>
                       <Link to='/home' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
                         Home
                       </Link>
@@ -151,20 +102,26 @@ export default function Header() {
                     </div>
                   )}
                   {dropdownOpen && currentUser.role==='organisation' && (
-                    <div className='absolute right-0 mt-3 w-56 bg-cyan-200 rounded-md border border-gray-700 shadow-lg z-20'>
+                    <div className='absolute right-0 mt-3 w-60 bg-cyan-200 rounded-md border border-gray-700 shadow-lg z-20'>
                       <Link to='/home' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
                         Home
                       </Link>
-                      <Link to='/organisation-donation-request' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
-                        Make Donation Request
+                      <Link to='/create-blood' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
+                        Create Blood
+                      </Link>
+                      <Link to='/update-blood' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
+                        Update Blood
+                      </Link>
+                      <Link to='/organisation-blood-request-history' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
+                        Blood Request Received
                       </Link>
                       <Link to='/organisation-donation-request-history' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
-                        Donation Request History
+                        Donation Request Received
                       </Link>
                     </div>
                   )}
                   {dropdownOpen && currentUser.role==='admin' && (
-                    <div className='absolute right-0 mt-3 w-56 bg-cyan-200 rounded-md border border-gray-700 shadow-lg z-20'>
+                    <div className='absolute right-0 mt-3 w-52 bg-cyan-200 rounded-md border border-gray-700 shadow-lg z-20'>
                       <Link to='/home' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
                         Home
                       </Link>
@@ -181,13 +138,10 @@ export default function Header() {
                         Organisation List
                       </Link>
                       <Link to='/admin-blood-request-history' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
-                        Blood Request
+                        All Blood Request
                       </Link>
                       <Link to='/admin-donation-request-history' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
-                        Donation Request
-                      </Link>
-                      <Link to='/blood-stock' className='block px-4 py-2 text-black hover:bg-slate-400' onClick={closeDropdown}>
-                        Blood Stock
+                        All Donation Request
                       </Link>
                     </div>
                   )}

@@ -10,38 +10,10 @@ module.exports.createBlood = async (req, res, next) => {
   }
 };
 
-module.exports.updateBlood = async (req, res, next) => {
-  const blood = await Blood.findById(req.params.id);
-  if (!blood) {
-    return next(errorHandler(404, 'Blood not found!'));
-  }
-  try {
-    const updatedBlood = await Blood.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.status(200).json(updatedBlood);
-  } catch (error) {
-    next(error);
-  }
-};
-
-module.exports.getBlood = async (req, res, next) => {
-  try {
-    const blood = await Blood.findById(req.params.id);
-    if (!blood) {
-      return next(errorHandler(404, 'Blood not found!'));
-    }
-    res.status(200).json(blood);
-  } catch (error) {
-    next(error);
-  }
-};
-
 module.exports.getAllBlood = async (req, res, next) => {
+  const { orgid } = req.params;
   try {
-    const allBlood = await Blood.find({});
+    const allBlood = await Blood.find({orgRef : orgid});
     if (!allBlood) {
       return next(errorHandler(404, 'Blood Not Found!'));
     }

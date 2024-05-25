@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function ConsumerBloodRequest() {
@@ -15,6 +15,30 @@ export default function ConsumerBloodRequest() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const [allOrganisationError, setAllOrganisationError] = useState(false);
+  const [allOrganisation, setAllOrganisation] = useState([]);
+
+    useEffect(() => {
+        const handleShowAllOrganisation = async () => {
+            try {
+              setAllOrganisationError(false);
+              const res = await fetch(`/api/admin/getallorganisations`, {
+                credentials: 'include'
+              });
+              const data = await res.json();
+              if (data.success === false) {
+                setAllOrganisationError(true);
+                return;
+              }
+              console.log(data);
+              setAllOrganisation(data);
+            } catch (error) {
+                setAllOrganisationError(true);
+            }
+        };
+        handleShowAllOrganisation();
+    },[]);
 
   const handleChange = (e) => {
     setFormData({
@@ -56,7 +80,7 @@ export default function ConsumerBloodRequest() {
   
   return (
       <>
-      <h1 className='text-3xl text-center font-semibold mt-6'>Blood Request</h1>
+      <h1 className='text-3xl text-center font-semibold mt-6'>Blood Request Form</h1>
       <div className='p-5 max-w-4xl mx-auto my-6 border-2 border-slate-800 rounded-md bg-slate-300'>
         <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-4'>
           <div className='flex flex-col gap-4 flex-1'>
@@ -112,9 +136,22 @@ export default function ConsumerBloodRequest() {
                 required
                 onChange={handleChange}
               />
+              <input
+                type='text'
+                placeholder='Reason (if any)'
+                className='border-2 border-neutral-600 p-3 rounded-md'
+                id='disease'
+                onChange={handleChange}
+              />
           </div>
           <div className='flex flex-col flex-1 gap-4'>
             <div className='flex flex-col gap-4 flex-1'>
+              <select className='border-2 border-neutral-600 p-3 rounded-md' id='orgRef' required onChange={handleChange}>
+                  <option value=''>Select a Organisation</option>
+                {allOrganisation && allOrganisation.map((organisation) => (
+                  <option key={organisation._id} value={organisation._id}>{organisation.organisationName}</option>
+                ))}
+              </select>
               <select className='border-2 border-neutral-600 p-3 rounded-md' id='gender' onChange={handleChange}>
                   <option value="">Select Gender</option>
                   <option value="male">Male</option>
@@ -140,20 +177,13 @@ export default function ConsumerBloodRequest() {
                 required
                 onChange={handleChange}
               />
-              <input
-                type='text'
-                placeholder='Disease (if any)'
-                className='border-2 border-neutral-600 p-3 rounded-md'
-                id='disease'
-                onChange={handleChange}
-              />
-            </div>
             <button
               disabled={loading}
               className='bg-green-600 border-2 border-neutral-600 text-white p-3 rounded-md uppercase hover:opacity-95 disabled:opacity-80'
             >
               {loading ? 'Loading...' : 'Submit'}
             </button>
+            </div>
           </div>
         </form>
         {error && <p className='text-red-500 mt-5'>{error}</p>}

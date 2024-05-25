@@ -33,9 +33,34 @@ export default function OrganisationDonationRequestHistory() {
         return moment(dateString).format('DD/MM/YYYY');
     };
 
+    const updateStatus = async (id, newStatus) => {
+        try {
+          const response = await fetch(`/api/organisation/updateorganisationdonationrequeststatus/${id}/${currentUser._id}`, {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus }),
+          });
+          const data = await response.json();
+          if (data.success === false) {
+            return;
+          }
+          console.log(data);
+          setDonationRequest((prevRequests) =>
+            prevRequests.map((request) =>
+              request._id === id ? { ...request, status: newStatus } : request
+            )
+          );
+        } catch (error) {
+          console.error('Failed to update status', error);
+        }
+    };
+
     return (
         <>
-            <h1 className='text-center my-4 text-3xl font-semibold'>My Donation Request History</h1>
+            <h1 className='text-center my-4 text-3xl font-semibold'>Total Donation Request Received</h1>
             {donationRequest.length > 0 ? (
                 <>
                 <div className='p-4 max-w-7xl mx-auto border-2 border-slate-600 bg-slate-300 rounded-md mb-4'>
@@ -46,12 +71,12 @@ export default function OrganisationDonationRequestHistory() {
                                     <th scope="col" className="px-6 py-3">
                                         Name
                                     </th>
-                                    <th scope="col" className="px-6 py-3">
+                                    {/* <th scope="col" className="px-6 py-3">
                                         Address
                                     </th>
                                     <th scope="col" className="px-6 py-3">
                                         Email
-                                    </th>
+                                    </th> */}
                                     {/* <th scope="col" className="px-6 py-3">
                                         Phone
                                     </th> */}
@@ -74,7 +99,13 @@ export default function OrganisationDonationRequestHistory() {
                                         Date
                                     </th>
                                     <th scope="col" className="px-6 py-3">
+                                        Role
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
                                         Status
+                                    </th>
+                                    <th scope="col" className="px-6 py-3">
+                                        Action
                                     </th>
                                 </tr>
                             </thead>
@@ -85,12 +116,12 @@ export default function OrganisationDonationRequestHistory() {
                                     <th className="px-6 py-4">
                                         {request.donorName}
                                     </th>
-                                    <td className="px-6 py-4">
+                                    {/* <td className="px-6 py-4">
                                         {request.address}
                                     </td>
                                     <td className="px-6 py-4">
                                         {request.email}
-                                    </td>
+                                    </td> */}
                                     {/* <td className="px-6 py-4">
                                         {request.phone}
                                     </td> */}
@@ -113,6 +144,9 @@ export default function OrganisationDonationRequestHistory() {
                                         {formatDate(request.date)}
                                     </td>
                                     <td className="px-6 py-4">
+                                        donor
+                                    </td>
+                                    <td className="px-6 py-4">
                                         {request.status === 'Pending' ? (
                                             <div className='h-7 w-20 text-white bg-sky-500'>
                                                 {request.status}
@@ -125,6 +159,22 @@ export default function OrganisationDonationRequestHistory() {
                                             <div className='h-7 w-20 text-white bg-red-600'>
                                                 {request.status}
                                             </div>
+                                        )}
+                                    </td>
+                                    <td className="flex gap-2 px-4 py-6">
+                                        {request.status === 'Pending' ? (
+                                        <>
+                                            <button onClick={() => updateStatus(request._id, 'Approved')} className='h-8 w-20 text-white rounded-3xl bg-green-600'>
+                                                Approve
+                                            </button>
+                                            <button onClick={() => updateStatus(request._id, 'Rejected')} className='h-8 w-20 text-white rounded-3xl bg-red-600'>
+                                                Reject
+                                            </button>
+                                        </>
+                                        ) : request.status === 'Approved' ? (
+                                            <div className='text-md flex-1'>{request.quantity} unit of {request.bloodGroup} blood receiced!</div>
+                                        ) : (
+                                            <div className='text-md flex-1'>Request Discarded!</div>
                                         )}
                                     </td>
                                 </tr>

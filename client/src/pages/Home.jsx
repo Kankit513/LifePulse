@@ -7,6 +7,7 @@ import { MdOutlineCancel } from "react-icons/md";
 import { GrStatusGood } from "react-icons/gr";
 import { RiMessage2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import OrganisationList from "../components/OrganisationList";
 
 export default function Home() {
 
@@ -32,6 +33,12 @@ export default function Home() {
       hospitalApprovedBloodRequests: 0,
       hospitalRejectedBloodRequests: 0,
     });
+    const [organisationBloodRequestCount, setOrganisationBloodRequestCount] = useState({
+      organisationTotalBloodRequests: 0,
+      organisationPendingBloodRequests: 0,
+      organisationApprovedBloodRequests: 0,
+      organisationRejectedBloodRequests: 0,
+    });
     const [organisationDonationRequestCount, setOrganisationDonationRequestCount] = useState({
       organisationTotalDonationRequests: 0,
       organisationPendingDonationRequests: 0,
@@ -49,23 +56,67 @@ export default function Home() {
       donorPendingDonationRequests: 0,
       donorApprovedDonationRequests: 0,
       donorRejectedDonationRequests: 0,
-    }); 
+    });
+
+    const [allOrganisationError, setAllOrganisationError] = useState(false);
+    const [allOrganisation, setAllOrganisation] = useState([]);
+
+      useEffect(() => {
+        if(currentUser.role != 'organisation') {
+          const handleShowAllOrganisation = async () => {
+              try {
+                setAllOrganisationError(false);
+                const res = await fetch(`/api/admin/getallorganisations`, {
+                  credentials: 'include'
+                });
+                const data = await res.json();
+                if (data.success === false) {
+                  setAllOrganisationError(true);
+                  return;
+                }
+                console.log(data);
+                setAllOrganisation(data);
+              } catch (error) {
+                  setAllOrganisationError(true);
+              }
+          };
+          handleShowAllOrganisation();
+        }
+      },[]);
 
       useEffect(() => {
         if(currentUser.role === 'hospital') {
         const fetchHospitalBloodRequestCount = async () => {
           try {
-            const response1 = await fetch(`/api/hospital/gethospitalbloodrequeststatuscount/${currentUser._id}`, {
+            const response0 = await fetch(`/api/hospital/gethospitalbloodrequeststatuscount/${currentUser._id}`, {
               credentials: 'include'
             });
-            const countData1 = await response1.json();
-            setHospitalBloodRequestCount(countData1);
+            const countData0 = await response0.json();
+            setHospitalBloodRequestCount(countData0);
           } catch (error) {
             console.error('Error fetching Blood Requests Count: ', error);
           }
         };
 
         fetchHospitalBloodRequestCount();
+        }
+      }, []);
+
+      useEffect(() => {
+        if(currentUser.role === 'organisation') {
+        const fetchOrganisationBloodRequestCount = async () => {
+          try {
+            const response1 = await fetch(`/api/organisation/getorganisationbloodrequeststatuscount/${currentUser._id}`, {
+              credentials: 'include'
+            });
+            const countData1 = await response1.json();
+            setOrganisationBloodRequestCount(countData1);
+          } catch (error) {
+            console.error('Error fetching Blood Requests Count: ', error);
+          }
+        };
+
+        fetchOrganisationBloodRequestCount();
         }
       }, []);
 
@@ -160,40 +211,42 @@ export default function Home() {
         }
       }, []);
 
-    useEffect(() => {
-        const handleShowAllBlood = async () => {
-            try {
-              setAllBloodError(false);
-              const res = await fetch(`/api/blood/getall`, {
-                credentials: 'include'
-              });
-              const data = await res.json();
-              if (data.success === false) {
-                setAllBloodError(true);
-                return;
+      useEffect(() => {
+        if(currentUser.role === 'organisation'){
+          const handleShowAllBlood = async () => {
+              try {
+                setAllBloodError(false);
+                const res = await fetch(`/api/blood/getall/${currentUser._id}`, {
+                  credentials: 'include'
+                });
+                const data = await res.json();
+                if (data.success === false) {
+                  setAllBloodError(true);
+                  return;
+                }
+                console.log(data);
+                setBloodStock(data);
+              } catch (error) {
+                  setAllBloodError(true);
               }
-              console.log(data);
-              setBloodStock(data);
-            } catch (error) {
-                setAllBloodError(true);
-            }
-        };
-        handleShowAllBlood();
-    }, [setBloodStock]);
+          };
+          handleShowAllBlood();
+        }
+      }, [setBloodStock]);
 
     return (
         <>
             <div>
                 <div className="flex flex-col gap-6 p-14 px-3 max-w-6xl mx-auto">
                   <h1 className="text-slate-800 font-bold text-3xl lg:text-6xl">
-                    Welcome to the <span className="text-slate-600">{currentUser.role}</span>
+                    Welcome to the <span className="text-slate-600">{currentUser.organisationName || currentUser.hospitalName} {currentUser.role}</span>
                     <br />
                     dashboard!
                   </h1>
                 <div className="text-gray-800 text-md sm:text-md">
-                  LifePulse is the place where you can accept and donate blood.
+                  LifePulse is the place where you can receive and donate blood.
                   <br />
-                  We have a great stock of each blood & various actions for you to perform.
+                  We have a good quantity of each blood & various properties for you to perform.
                 </div>
                 <Link
                   to={"/about"}
@@ -202,8 +255,28 @@ export default function Home() {
                   Lets Read More...
                 </Link>
                 </div>
-
-                {bloodStock && bloodStock.length > 0 && (
+                {currentUser.role != 'organisation' ? (
+                <>
+                <div className=''>
+                  <div className="mb-4">
+                    <h2 className="text-2xl font-semibold flex justify-center uppercase text-slate-800">
+                      Organisation Lists
+                    </h2>
+                  </div>
+                  <div className="flex flex-wrap max-w-6xl justify-center mx-auto gap-6">
+                    {allOrganisation.map((organisation) => (
+                      <OrganisationList
+                        organisation={organisation}
+                        key={organisation._id}
+                      />
+                    ))}
+                  </div>
+                </div>
+                </>
+                ) : (
+                  null
+                )}
+                {bloodStock && bloodStock.length > 0 && currentUser.role === 'organisation' && (
                     <div className='mb-4'>
                       {/* <h1 className='text-center mt-6 text-3xl font-semibold'>Blood Stock</h1> */}
                         <div className="flex flex-wrap items-center justify-center mx-auto gap-7 max-w-6xl rounded-lg p-1">
@@ -231,7 +304,7 @@ export default function Home() {
                 {currentUser.role === 'admin' ? (
                   <>
                     <div className='flex flex-wrap'>
-                        <div className="flex flex-wrap items-center justify-center mx-auto gap-5 mb-3 border-slate-600 rounded-lg p-5">
+                        <div className="flex flex-wrap items-center justify-center mx-auto gap-5 mb-3 mt-2 border-slate-600 rounded-lg p-5">
                             <div className="flex flex-col w-64 bg-slate-300 rounded-lg shadow-lg p-4">
                                 <div className="flex flex-col gap-2">
                                     <div className='flex justify-end gap-2'>
@@ -424,7 +497,70 @@ export default function Home() {
                   </>
                 ) : currentUser.role === 'organisation' ? (
                   <>
-                    <div className="flex flex-wrap items-center justify-center mx-auto gap-5 my-2 rounded-lg p-5">
+                      <div className='flex flex-wrap'>
+                        <div className="flex flex-wrap items-center justify-center mx-auto gap-5 mb-3 border-slate-600 rounded-lg p-5">
+                            <div className="flex flex-col w-64 bg-slate-300 rounded-lg shadow-lg p-4">
+                                <div className="flex flex-col gap-2">
+                                    <div className='flex justify-end gap-2'>
+                                      <p className='text-md font-semibold text-black text-center'>
+                                        Total Blood Request
+                                      </p>
+                                      <RiMessage2Line className='text-blue-600 h-6 w-6' />
+                                    </div>
+                                    <div className="mt-4">
+                                      <p className="text-md font-semibold text-black">
+                                        {organisationBloodRequestCount.organisationTotalBloodRequests} 
+                                      </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-col w-64 bg-slate-300 rounded-lg shadow-lg p-4">
+                                <div className="flex flex-col gap-2">
+                                    <div className='flex justify-end gap-2'>
+                                      <p className='text-md font-semibold text-black text-center'>
+                                        Blood Request Pending
+                                      </p>
+                                      <MdOutlinePending className='text-amber-600 h-6 w-6' />
+                                    </div>
+                                    <div className="mt-4">
+                                      <p className="text-md font-semibold text-black">
+                                        {organisationBloodRequestCount.organisationPendingBloodRequests}
+                                      </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-col w-64 bg-slate-300 rounded-lg shadow-lg p-4">
+                                <div className="flex flex-col gap-2">
+                                    <div className='flex justify-end gap-2'>
+                                      <p className='text-md font-semibold text-black text-center'>
+                                        Blood Request Approved
+                                      </p>
+                                      <GrStatusGood className='text-green-600 h-6 w-6' />
+                                    </div>
+                                    <div className="mt-4">
+                                      <p className="text-md font-semibold text-black">
+                                        {organisationBloodRequestCount.organisationApprovedBloodRequests}
+                                      </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-col w-64 bg-slate-300 rounded-lg shadow-lg p-4">
+                                <div className="flex flex-col gap-2">
+                                    <div className='flex justify-end gap-2'>
+                                      <p className='text-md font-semibold text-black text-center'>
+                                        Blood Request Rejected
+                                      </p>
+                                      <MdOutlineCancel className='text-red-600 h-6 w-6' />
+                                    </div>
+                                    <div className="mt-4">
+                                      <p className="text-md font-semibold text-black">
+                                        {organisationBloodRequestCount.organisationRejectedBloodRequests}
+                                      </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-wrap items-center justify-center mx-auto gap-5 mb-4 rounded-lg p-1">
                             <div className="flex flex-col w-64 bg-slate-300 rounded-lg shadow-lg p-4">
                                 <div className="flex flex-col gap-2">
                                     <div className='flex justify-end gap-2'>
@@ -485,7 +621,8 @@ export default function Home() {
                                     </div>
                                 </div>
                             </div>
-                    </div>
+                        </div>
+                      </div> 
                   </>
                 ) : currentUser.role === 'consumer' ? (
                   <>
@@ -559,7 +696,7 @@ export default function Home() {
                                 <div className="flex flex-col gap-2">
                                     <div className='flex justify-end gap-2'>
                                       <p className='text-md font-semibold text-black text-center'>
-                                        Total Donation Request
+                                        Total Donor Request
                                       </p>
                                       <RiMessage2Line className='text-blue-600 h-6 w-6' />
                                     </div>
@@ -574,14 +711,13 @@ export default function Home() {
                                 <div className="flex flex-col gap-2">
                                     <div className='flex justify-end gap-2'>
                                       <p className='text-md font-semibold text-black text-center'>
-                                        Donation Request Pending
+                                        Donor Request Pending
                                       </p>
                                       <MdOutlinePending className='text-amber-600 h-6 w-6' />
                                     </div>
                                     <div className="mt-4">
                                       <p className="text-md font-semibold text-black">
-                                        {donorDonationRequestCount.donorPendingDonationRequests}
-                                      </p>
+                                        {donorDonationRequestCount.donorPendingDonationRequests}                                      </p>
                                     </div>
                                 </div>
                             </div>
@@ -589,14 +725,13 @@ export default function Home() {
                                 <div className="flex flex-col gap-2">
                                     <div className='flex justify-end gap-2'>
                                       <p className='text-md font-semibold text-black text-center'>
-                                        Donation Request Approved
+                                        Donor Request Approved
                                       </p>
                                       <GrStatusGood className='text-green-600 h-6 w-6' />
                                     </div>
                                     <div className="mt-4">
                                       <p className="text-md font-semibold text-black">
-                                        {donorDonationRequestCount.donorApprovedDonationRequests}
-                                      </p>
+                                        {donorDonationRequestCount.donorApprovedDonationRequests}                                      </p>
                                     </div>
                                 </div>
                             </div>
@@ -604,14 +739,13 @@ export default function Home() {
                                 <div className="flex flex-col gap-2">
                                     <div className='flex justify-end gap-2'>
                                       <p className='text-md font-semibold text-black text-center'>
-                                        Donation Request Rejected
+                                        Donor Request Rejected
                                       </p>
                                       <MdOutlineCancel className='text-red-600 h-6 w-6' />
                                     </div>
                                     <div className="mt-4">
                                       <p className="text-md font-semibold text-black">
-                                        {donorDonationRequestCount.donorRejectedDonationRequests}
-                                      </p>
+                                        {donorDonationRequestCount.donorRejectedDonationRequests}                                      </p>
                                     </div>
                                 </div>
                             </div>

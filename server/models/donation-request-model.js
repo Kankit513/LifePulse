@@ -54,6 +54,11 @@ const donationRequestSchema = new Schema(
         ref: 'User',
         required: true,
       },
+      orgRef: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
       date: { 
         type: Date, 
         default: Date.now 
